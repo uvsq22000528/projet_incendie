@@ -90,9 +90,6 @@ def stop():
     global Terrain
 
 
-def feu():
-    print(event.x, event.Y)
-
 #Commande
 Createur = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Crée", font = ("helvetica", "30"), command= aleatzone)
     # un bouton qui génère un terrain au hasard avec des parcelles d’eau, de forêt et de prairie;
@@ -113,7 +110,7 @@ EtapeSuivante.grid(row= 3, column= 3) # positionnement de l'Etape suivante
 Start.grid(row= 3, column= 4) # positionnement du Start
 Stop.grid(row= 3, column= 5) # positionnement du Stop
 
-canvas.bind('<button-1>', feu)
+
 
 
 racine.mainloop()
