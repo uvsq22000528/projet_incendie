@@ -65,7 +65,7 @@ def save():
     with open("sauvegarde.txt", 'w') as filout :
         for i in range (80):
           for j in range (80):
-            filout.write("{}\n".format(Terrain[i][j]))
+            filout.write("'" + Terrain[i][j] + "{}\n".format("'"))
 
 def load():
     #Chargement du terrain a partir du fichier sauvegarde
@@ -73,8 +73,10 @@ def load():
     with open("sauvegarde.txt", 'r') as filin:
         for i in range (80):
           for j in range (80):
+                color = filin.readline()
+                print(color)
                 canvas.create_rectangle((i*larg_case, j*haut_case),
-                    ((i+1)*larg_case, (j+1)*haut_case), fill=filin.readline())
+                    ((i+1)*larg_case, (j+1)*haut_case), fill= color)
 
 
     
