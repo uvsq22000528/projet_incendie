@@ -70,8 +70,15 @@ def save():
 def load():
     #Chargement du terrain a partir du fichier sauvegarde
     global Terrain
-    filin = open("sauvegarde.txt", 'r')
-    print(filin.read())
+    ligne = 0
+    with open("sauvegarde.txt", 'r') as filin:
+        for i in range (80):
+          for j in range (80):
+            Terrain[i][j] = filin.readlines(ligne)
+            ligne +=1
+            canvas.create_rectangle((i*larg_case, j*haut_case),
+                ((i+1)*larg_case, (j+1)*haut_case), fill=color)
+
 
     
 
