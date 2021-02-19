@@ -28,11 +28,11 @@ Gris = "grey30"
 Noir = "grey1"
 
 #Affichage
-HEIGHT, WIDTH = 800, 800
+HEIGHT, WIDTH = 640, 640
 haut_case= HEIGHT//80
 larg_case = WIDTH//80
-canvas = tk.Canvas(racine, bg="white", height=800, width=800)
-canvas.grid(column=0, rowspan=5)
+canvas = tk.Canvas(racine, bg="white", height = HEIGHT, width=WIDTH)
+canvas.grid(columnspan=6, row=1)
 
 
 #variable
@@ -101,12 +101,12 @@ Start = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Start",
     # un bouton qui permet de démarrer une simulation;
 Stop = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Stop", font = ("helvetica", "30"), command = stop) 
     # un bouton pour arrêter la simulation;
-Createur.grid(row= 0, column= 1) # positionnement du Createur
-Save.grid(row= 1, column= 1) # positionnement du Save
-Load.grid(row= 2, column= 1) # positionnement du Load
-EtapeSuivante.grid(row= 3, column= 1) # positionnement de l'Etape suivante
-Start.grid(row= 4, column= 1) # positionnement du Start
-Stop.grid(row= 5, column= 1) # positionnement du Stop
+Createur.grid(row= 3, column= 0) # positionnement du Createur
+Save.grid(row= 3, column= 1) # positionnement du Save
+Load.grid(row= 3, column= 2) # positionnement du Load
+EtapeSuivante.grid(row= 3, column= 3) # positionnement de l'Etape suivante
+Start.grid(row= 3, column= 4) # positionnement du Start
+Stop.grid(row= 3, column= 5) # positionnement du Stop
 
 
 
