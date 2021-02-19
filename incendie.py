@@ -64,8 +64,8 @@ def save():
     #Sauvegarde du terrain dans le fichier sauvegarde
     global Terrain
     with open("sauvegarde.txt", 'w') as filout :
-        for i in range (80):
-          for j in range (80):
+        for j in range (80):
+          for i in range (80):
             filout.write("{}\n".format(Terrain[i][j]))
 
 def load():
