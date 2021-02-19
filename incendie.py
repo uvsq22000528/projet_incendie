@@ -95,7 +95,7 @@ Save = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Save", f
     # un bouton pour sauvegarder l’état du terrain dans un fichier;
 Load = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Load", font = ("helvetica", "30"), command = load) 
     # un bouton pour charger un terrain depuis un fichier;
-EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text=">", font = ("helvetica", "30"), command = suivant) 
+EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="step", font = ("helvetica", "30"), command = suivant) 
     # un bouton permet d’effectuer une étape de simulation;
 Start = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Start", font = ("helvetica", "30"), command = start) 
     # un bouton qui permet de démarrer une simulation;
