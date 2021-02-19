@@ -50,6 +50,7 @@ durée_cendre = 2
 #fonction
 
 def aleatzone():
+    #creation du terrain
     global Couleur, larg_case, haut_case, Terrain
     for i in range (80):
         for j in range (80):
@@ -59,10 +60,16 @@ def aleatzone():
                 ((i+1)*larg_case, (j+1)*haut_case), fill=color)
 
 def save():
+    #Sauvegarde du terrain dans le fichier sauvegarde
     global Terrain
-    with open("sauvegarde.txt", 'w')
-    for case in Terrain :
-        open("sauvegarde.txt", 'w') ## Sauvegarde du dictionnaire
+    with open("sauvegarde.txt", 'w') as filout :
+        for i in range (80):
+          for j in range (80):
+            filout.write(Terrain[i][j])
+
+def load():
+    #Chargement du terrain a partir du fichier sauvegarde
+    
     
 
 
@@ -71,13 +78,13 @@ Createur = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Cré
     # un bouton qui génère un terrain au hasard avec des parcelles d’eau, de forêt et de prairie;
 Save = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Save", font = ("helvetica", "30"), command= save) 
     # un bouton pour sauvegarder l’état du terrain dans un fichier;
-Load = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Load", font = ("helvetica", "30"), command= lambda: caractere("3")) 
+Load = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Load", font = ("helvetica", "30") ) 
     # un bouton pour charger un terrain depuis un fichier;
-EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text=">", font = ("helvetica", "30"), command= lambda: caractere("4")) 
+EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text=">", font = ("helvetica", "30")) 
     # un bouton permet d’effectuer une étape de simulation;
-Start = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Start", font = ("helvetica", "30"), command= lambda: caractere("5")) 
+Start = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Start", font = ("helvetica", "30")) 
     # un bouton qui permet de démarrer une simulation;
-Stop = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Stop", font = ("helvetica", "30"), command= lambda: caractere("6")) 
+Stop = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Stop", font = ("helvetica", "30")) 
     # un bouton pour arrêter la simulation;
 Createur.grid(row= 0, column= 1) # positionnement du Createur
 Save.grid(row= 1, column= 1) # positionnement du Save
