@@ -65,11 +65,14 @@ def save():
     with open("sauvegarde.txt", 'w') as filout :
         for i in range (80):
           for j in range (80):
-            filout.write(Terrain[i][j])
+            filout.write("{}/n".Terrain[i][j])
 
 def load():
     #Chargement du terrain a partir du fichier sauvegarde
-    
+    global Terrain
+    filin = open("sauvegarde.txt", 'r')
+    print(filin.read())
+
     
 
 
@@ -78,7 +81,7 @@ Createur = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Cré
     # un bouton qui génère un terrain au hasard avec des parcelles d’eau, de forêt et de prairie;
 Save = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Save", font = ("helvetica", "30"), command= save) 
     # un bouton pour sauvegarder l’état du terrain dans un fichier;
-Load = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Load", font = ("helvetica", "30") ) 
+Load = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Load", font = ("helvetica", "30"), command = load) 
     # un bouton pour charger un terrain depuis un fichier;
 EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text=">", font = ("helvetica", "30")) 
     # un bouton permet d’effectuer une étape de simulation;
