@@ -41,7 +41,7 @@ Couleur=[Bleu, Vert, Rouge, Jaune, Gris, Noir]
 Largeur, Hauteur = 80, 80
 Terrain = 6400*[0]
 NmbrTour = 0
-auto = False
+auto = True
 Durée = 6400*[0]
 
 #constante
@@ -87,16 +87,57 @@ def load():
 
 def suivant():
     #pour le parcour Pas à pas
-    global Terrain
+    global Terrain, NmbrTour
+    k = 0
+    for i in range (80):
+        for j in range (80):
+            print(Terrain[k])
+            if Terrain[k] == Rouge :
+                Durée[k] -= 1
+                if Durée[k] == 0 :
+                    Terrain[k] = Gris
+                    Durée[k] = durée_cendre
+                    canvas.create_rectangle((i*larg_case, j*haut_case),
+                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+            elif Terrain[k] == Gris :
+                Durée[k] -= 1
+                if Durée[k] == 0 :
+                    Terrain[k] = Noir
+                    canvas.create_rectangle((i*larg_case, j*haut_case),
+                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+            elif Terrain[k] == Jaune :
+                if Terrain[(i+1)+j*100] == Rouge or Terrain[(i-1)+j*100] == Rouge or Terrain[i+(j+1)*100] == Rouge or Terrain[i+(j-1)*100] == Rouge :
+                    Terrain[k] = Rouge
+                    Durée[k] = durée_feu
+                    canvas.create_rectangle((i*larg_case, j*haut_case),
+                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+            elif Terrain[k] == Vert :
+                proba = 0
+                if Terrain[(i+1)+j*100] == Rouge :
+                    proba += 0.1
+                if Terrain[(i-1)+j*100] == Rouge :
+                    proba += 0.1
+                if Terrain[i+(j+1)*100] == Rouge :
+                    proba += 0.1
+                if Terrain[i+(j-1)*100] == Rouge :
+                    proba += 0.1
+                chance = random.random()
+                if proba >= chance :
+                    Terrain[k] = Rouge
+                    Durée[k] = durée_feu
+                    canvas.create_rectangle((i*larg_case, j*haut_case),
+                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+            k+=1
+    NmbrTour +=1
 
 def start():
     #Simulation automatique 
-    global Terrain
+    global Terrain, auto
     auto = True
 
 def stop():
     #arrêt de la simulation
-    global Terrain
+    global Terrain, auto
 
 
 def click(event):
@@ -115,7 +156,49 @@ def click(event):
                         ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
             k += 1
 
-
+""" def tour():
+    global Terrain, durée_cendre, durée_feu, Durée, larg_case, haut_case, Couleur, auto
+    if auto ==  True :
+        k = 0
+        for i in range (80):
+            for j in range (80):
+                print(Terrain[k])
+                if Terrain[k] == Rouge :
+                    Durée[k] -= 1
+                    if Durée[k] == 0 :
+                        Terrain[k] = Gris
+                        Durée[k] = durée_cendre
+                        canvas.create_rectangle((i*larg_case, j*haut_case),
+                            ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+                elif Terrain[k] == Gris :
+                    Durée[k] -= 1
+                    if Durée[k] == 0 :
+                        Terrain[k] = Noir
+                        canvas.create_rectangle((i*larg_case, j*haut_case),
+                            ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+                elif Terrain[k] == Jaune :
+                    if Terrain[(i+1)+j*100] == Rouge or Terrain[(i-1)+j*100] == Rouge or Terrain[i+(j+1)*100] == Rouge or Terrain[i+(j-1)*100] == Rouge :
+                        Terrain[k] = Rouge
+                        Durée[k] = durée_feu
+                        canvas.create_rectangle((i*larg_case, j*haut_case),
+                            ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+                elif Terrain[k] == Vert :
+                    proba = 0
+                    if Terrain[(i+1)+j*100] == Rouge :
+                        proba += 0.1
+                    if Terrain[(i-1)+j*100] == Rouge :
+                        proba += 0.1
+                    if Terrain[i+(j+1)*100] == Rouge :
+                        proba += 0.1
+                    if Terrain[i+(j-1)*100] == Rouge :
+                        proba += 0.1
+                    chance = random.random()
+                    if proba >= chance :
+                        Terrain[k] = Rouge
+                        Durée[k] = durée_feu
+                        canvas.create_rectangle((i*larg_case, j*haut_case),
+                            ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+                k+=1 """
 
 #Commande
 Createur = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Crée", font = ("helvetica", "30"), command= aleatzone)
@@ -124,7 +207,7 @@ Save = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Save", f
     # un bouton pour sauvegarder l’état du terrain dans un fichier;
 Load = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Load", font = ("helvetica", "30"), command = load) 
     # un bouton pour charger un terrain depuis un fichier;
-EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="step", font = ("helvetica", "30"), command = lambda: suivant("Enter")) 
+EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="step", font = ("helvetica", "30"), command = suivant) 
     # un bouton permet d’effectuer une étape de simulation;
 Start = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Start", font = ("helvetica", "30"), command = start) 
     # un bouton qui permet de démarrer une simulation;
@@ -145,41 +228,7 @@ Stop.grid(row= 3, column= 5) # positionnement du Stop
 #Boucle du code
 canvas.bind("<Button-1>",click)
 
-if auto or "<enter>" :
-    k = 0
-    for i in range (80):
-        for j in range (80):
-            if Terrain[k] == Rouge :
-                Durée[k] -= 1
-                if Durée[k] == 0 :
-                    Terrain[k] = Gris
-                    Durée[k] = durée_cendre
-                    canvas.create_rectangle((i*larg_case, j*haut_case),
-                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
-            elif Terrain[k] == Gris :
-                Durée[k] -= 1
-                if Durée[k] == 0 :
-                    Terrain[k] = Noir
-                    canvas.create_rectangle((i*larg_case, j*haut_case),
-                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
-            elif Terrain[k] == Jaune :
-                if Terrain[(i+1)+j*100] == Rouge or Terrain[(i-1)+j*100] == Rouge or Terrain[i+(j+1)*100] == Rouge or Terrain[i+(j_1)*100] == Rouge :
-                    Terrain[k] = Rouge
-                    Durée[k] = durée_feu
-            elif Terrain[k] == Vert :
-                proba = 0
-                if Terrain[(i+1)+j*100] == Rouge :
-                    proba += 0.1
-                if Terrain[(i-1)+j*100] == Rouge :
-                    proba += 0.1
-                if Terrain[i+(j+1)*100] == Rouge :
-                    proba += 0.1
-                if Terrain[i+(j-1)*100] == Rouge :
-                    proba += 0.1
-                chance = random.random()
-                if proba >= chance :
-                    Terrain[k] = Rouge
-                    Durée[k] = durée_feu
+
 
 
 racine.mainloop()
