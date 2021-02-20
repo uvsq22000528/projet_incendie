@@ -58,7 +58,7 @@ def aleatzone():
             color = random.choice([Bleu, Vert, Jaune])
             Terrain[i][j] = color
             canvas.create_rectangle((i*larg_case, j*haut_case),
-                ((i+1)*larg_case, (j+1)*haut_case), fill=color)
+                ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[i][j])
 
 def save():
     #Sauvegarde du terrain dans le fichier sauvegarde
@@ -92,6 +92,7 @@ def stop():
 
 
 def click(event):
+    #Click qui transforme les forets et les plaines en feu
     global Terrain, Vert, Jaune, Rouge, larg_case, haut_case
     print(event.x, event.y)
     for i in range (80):
@@ -113,12 +114,14 @@ Save = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Save", f
     # un bouton pour sauvegarder l’état du terrain dans un fichier;
 Load = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Load", font = ("helvetica", "30"), command = load) 
     # un bouton pour charger un terrain depuis un fichier;
-EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="step", font = ("helvetica", "30"), command = suivant) 
+EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="step", font = ("helvetica", "30"), command = lambda: suivant("Enter")) 
     # un bouton permet d’effectuer une étape de simulation;
 Start = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Start", font = ("helvetica", "30"), command = start) 
     # un bouton qui permet de démarrer une simulation;
 Stop = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Stop", font = ("helvetica", "30"), command = stop) 
     # un bouton pour arrêter la simulation;
+
+#Position des commades
 Createur.grid(row= 3, column= 0) # positionnement du Createur
 Save.grid(row= 3, column= 1) # positionnement du Save
 Load.grid(row= 3, column= 2) # positionnement du Load
@@ -126,6 +129,10 @@ EtapeSuivante.grid(row= 3, column= 3) # positionnement de l'Etape suivante
 Start.grid(row= 3, column= 4) # positionnement du Start
 Stop.grid(row= 3, column= 5) # positionnement du Stop
 
+
+
+
+#Boucle du code
 canvas.bind("<Button-1>",click)
 
 
