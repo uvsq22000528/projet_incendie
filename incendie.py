@@ -64,12 +64,13 @@ def save():
     #Sauvegarde du terrain dans le fichier sauvegarde
     global Terrain
     with open("sauvegarde.txt", 'w') as filout :
-        for j in range (80):
-          for i in range (80):
+        for i in range (80):
+          for j in range (80):
             filout.write("{}\n".format(Terrain[i][j]))
 
 def load():
     #Chargement du terrain a partir du fichier sauvegarde
+    global Couleur, larg_case, haut_case, Terrain
     with open("sauvegarde.txt", 'r') as filin:
         for i in range (80):
           for j in range (80):
@@ -88,6 +89,20 @@ def start():
 def stop():
     #arrêt de la simulation
     global Terrain
+
+
+def click(event):
+    global Terrain, Vert, Jaune, Rouge, larg_case, haut_case
+    for i in range (80):
+        for j in range (80):
+            x = larg_case*i
+            y = haut_case*j
+            if x< event.x <x+larg_case and y< event.y <y+haut_case:
+                if Terrain[i][j] == Vert or Terrain[i][j] == Jaune :
+                    Terrain[i][j] = Rouge
+                    canvas.create_rectangle((i*larg_case, j*haut_case),
+                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[i][j])
+
 
 
 #Commande
@@ -110,7 +125,7 @@ EtapeSuivante.grid(row= 3, column= 3) # positionnement de l'Etape suivante
 Start.grid(row= 3, column= 4) # positionnement du Start
 Stop.grid(row= 3, column= 5) # positionnement du Stop
 
-
+canvas.bind("<Button-1>",click)
 
 
 racine.mainloop()
