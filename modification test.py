@@ -38,15 +38,15 @@ canvas.grid(columnspan=6, row=1)
 
 #variable
 Couleur=[Bleu, Vert, Rouge, Jaune, Gris, Noir]
-Largeur, Hauteur = 100, 100
-Terrain = 10000*[0]
+Largeur, Hauteur = 80, 80
+Terrain = 6400*[0]
 NmbrTour = 0
 auto = False
-Durée = 10000*[0]
+Durée = 6400*[0]
 
 #constante
 durée_feu = 3
-durée_cendre = 2
+durée_cendre = 3
 
 
 
@@ -153,7 +153,7 @@ if auto or "<enter>" :
                 Durée[k] -= 1
                 if Durée[k] == 0 :
                     Terrain[k] = Gris
-                    Durée[k] = 3
+                    Durée[k] = durée_cendre
                     canvas.create_rectangle((i*larg_case, j*haut_case),
                         ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
             elif Terrain[k] == Gris :
@@ -162,8 +162,24 @@ if auto or "<enter>" :
                     Terrain[k] = Noir
                     canvas.create_rectangle((i*larg_case, j*haut_case),
                         ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
-            
-
+            elif Terrain[k] == Jaune :
+                if Terrain[(i+1)+j*100] == Rouge or Terrain[(i-1)+j*100] == Rouge or Terrain[i+(j+1)*100] == Rouge or Terrain[i+(j_1)*100] == Rouge :
+                    Terrain[k] = Rouge
+                    Durée[k] = durée_feu
+            elif Terrain[k] == Vert :
+                proba = 0
+                if Terrain[(i+1)+j*100] == Rouge :
+                    proba += 0.1
+                if Terrain[(i-1)+j*100] == Rouge :
+                    proba += 0.1
+                if Terrain[i+(j+1)*100] == Rouge :
+                    proba += 0.1
+                if Terrain[i+(j-1)*100] == Rouge :
+                    proba += 0.1
+                chance = random.random()
+                if proba >= chance :
+                    Terrain[k] = Rouge
+                    Durée[k] = durée_feu
 
 
 racine.mainloop()
