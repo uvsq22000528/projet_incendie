@@ -38,7 +38,7 @@ canvas.grid(columnspan=6, row=1)
 
 #variable
 Couleur=[Bleu, Vert, Rouge, Jaune, Gris, Noir]
-Largeur, Hauteur = 100, 100
+Largeur, Hauteur = 80, 80
 Terrain = Hauteur*[Largeur*[0]]
 
 #constante
