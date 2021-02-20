@@ -93,6 +93,7 @@ def stop():
 
 def click(event):
     global Terrain, Vert, Jaune, Rouge, larg_case, haut_case
+    print(event.x, event.y)
     for i in range (80):
         for j in range (80):
             x = larg_case*i
