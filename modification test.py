@@ -40,6 +40,9 @@ canvas.grid(columnspan=6, row=1)
 Couleur=[Bleu, Vert, Rouge, Jaune, Gris, Noir]
 Largeur, Hauteur = 100, 100
 Terrain = 10000*[0]
+NmbrTour = 0
+auto = False
+Durée = 10000*[0]
 
 #constante
 durée_feu = 3
@@ -89,6 +92,7 @@ def suivant():
 def start():
     #Simulation automatique 
     global Terrain
+    auto = True
 
 def stop():
     #arrêt de la simulation
@@ -140,6 +144,26 @@ Stop.grid(row= 3, column= 5) # positionnement du Stop
 
 #Boucle du code
 canvas.bind("<Button-1>",click)
+
+if auto or "<enter>" :
+    k = 0
+    for i in range (80):
+        for j in range (80):
+            if Terrain[k] == Rouge :
+                Durée[k] -= 1
+                if Durée[k] == 0 :
+                    Terrain[k] = Gris
+                    Durée[k] = 3
+                    canvas.create_rectangle((i*larg_case, j*haut_case),
+                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+            elif Terrain[k] == Gris :
+                Durée[k] -= 1
+                if Durée[k] == 0 :
+                    Terrain[k] = Noir
+                    canvas.create_rectangle((i*larg_case, j*haut_case),
+                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[k])
+            
+
 
 
 racine.mainloop()
