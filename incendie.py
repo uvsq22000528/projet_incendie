@@ -40,6 +40,7 @@ canvas.grid(columnspan=6, row=1)
 Couleur=[Bleu, Vert, Rouge, Jaune, Gris, Noir]
 Largeur, Hauteur = 8, 8
 Terrain = []
+NmbrTour = 0
 
 #constante
 durée_feu = 3
