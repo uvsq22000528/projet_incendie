@@ -84,7 +84,7 @@ def load():
 
 def suivant():
     #pour le parcour Pas à pas
-    global Terrain, NmbrTour
+    global Terrain, NmbrTour, WIDTH, HEIGHT, Largeur, Hauteur
     k = 0
     for i in range(0, WIDTH, Largeur):
         for j in range(0, HEIGHT, Hauteur):
