@@ -38,8 +38,8 @@ canvas.grid(columnspan=6, row=1)
 
 #variable
 Couleur=[Bleu, Vert, Rouge, Jaune, Gris, Noir]
-Largeur, Hauteur = 80, 80
-Terrain = Hauteur*[Largeur*[0]]
+Largeur, Hauteur = 8, 8
+Terrain = []
 
 #constante
 durée_feu = 3
@@ -52,35 +52,79 @@ durée_cendre = 2
 
 def aleatzone():
     #creation du terrain
-    global Couleur, larg_case, haut_case, Terrain
-    for i in range (80):
-        for j in range (80):
-            color = random.choice([Bleu, Vert, Jaune])
-            Terrain[i][j] = color
-            canvas.create_rectangle((i*larg_case, j*haut_case),
-                ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[i][j])
+    global Couleur, Largeur, Hauteur, Terrain
+
+    k = 0
+    for i in range(0, WIDTH, Largeur):
+        for j in range(0, HEIGHT, Hauteur):
+            Terrain.append([i, j, random.choice([Bleu, Vert, Jaune]), 0])
+            canvas.create_rectangle((i, j),
+                (i+Largeur, j+Hauteur), fill=Terrain[k][2])
+            k += 1
 
 def save():
     #Sauvegarde du terrain dans le fichier sauvegarde
     global Terrain
+    k = 0
     with open("sauvegarde.txt", 'w') as filout :
-        for i in range (80):
-          for j in range (80):
-            filout.write("{}\n".format(Terrain[i][j]))
+        for i in range(0, WIDTH, Largeur):
+            for j in range(0, HEIGHT, Hauteur):
+                filout.write("{}\n".format(Terrain[k][2]))
+                k += 1
 
 def load():
     #Chargement du terrain a partir du fichier sauvegarde
     global Couleur, larg_case, haut_case, Terrain
     with open("sauvegarde.txt", 'r') as filin:
-        for i in range (80):
-          for j in range (80):
-                canvas.create_rectangle((i*larg_case, j*haut_case),
-                    ((i+1)*larg_case, (j+1)*haut_case), fill= filin.readline())
+        for i in range(0, WIDTH, Largeur):
+            for j in range(0, HEIGHT, Hauteur):
+                canvas.create_rectangle((i, j),
+                        (i+Largeur, j+Hauteur), fill=filin.readline())
 
 
 def suivant():
     #pour le parcour Pas à pas
-    global Terrain
+    global Terrain, NmbrTour
+    k = 0
+    for i in range(0, WIDTH, Largeur):
+        for j in range(0, HEIGHT, Hauteur):
+            if Terrain[k][2] == Rouge :
+                Terrain[k][3] -= 1
+                if Terrain[k][3] == 0 :
+                    Terrain[k][2] = Gris
+                    Terrain[k][3] = durée_cendre
+                    canvas.create_rectangle((i, j),
+                        (i+Largeur, j+Hauteur), fill=Terrain[k][2])
+            elif Terrain[k][2] == Gris :
+                Terrain[k][3] -= 1
+                if Terrain[k][3] == 0 :
+                    Terrain[k][2] = Noir
+                    canvas.create_rectangle((i, j),
+                        (i+Largeur, j+Hauteur), fill=Terrain[k][2])
+            elif Terrain[k][2] == Jaune :
+                if Terrain[k+(j//Hauteur)][2] == Rouge or Terrain[k-(j//Hauteur)][2] == Rouge or Terrain[k+HEIGHT][2] == Rouge or Terrain[k-HEIGHT][2] == Rouge :
+                    Terrain[k][2] = Rouge
+                    Terrain[k][3] = durée_feu
+                    canvas.create_rectangle((i, j),
+                        (i+Largeur, j+Hauteur), fill=Terrain[k][2])
+            elif Terrain[k][2] == Vert :
+                proba = 0
+                if Terrain[k+(j//Hauteur)][2] == Rouge :
+                    proba += 0.1
+                if Terrain[k-(j//Hauteur)][2] == Rouge :
+                    proba += 0.1
+                if Terrain[k+HEIGHT][2] == Rouge :
+                    proba += 0.1
+                if Terrain[k-HEIGHT][2] == Rouge :
+                    proba += 0.1
+                chance = random.random()
+                if proba >= chance :
+                    Terrain[k][2] = Rouge
+                    Terrain[k][3] = durée_feu
+                    canvas.create_rectangle((i, j),
+                        (i+Largeur, j+Hauteur), fill=Terrain[k][2])
+            k+=1
+    NmbrTour +=1
 
 def start():
     #Simulation automatique 
@@ -95,15 +139,18 @@ def click(event):
     #Click qui transforme les forets et les plaines en feu
     global Terrain, Vert, Jaune, Rouge, larg_case, haut_case
     print(event.x, event.y)
-    for i in range (80):
-        for j in range (80):
-            x = larg_case*i
-            y = haut_case*j
-            if x< event.x <x+larg_case and y< event.y <y+haut_case:
-                if Terrain[i][j] == Vert or Terrain[i][j] == Jaune :
-                    Terrain[i][j] = Rouge
-                    canvas.create_rectangle((i*larg_case, j*haut_case),
-                        ((i+1)*larg_case, (j+1)*haut_case), fill=Terrain[i][j])
+    k = 0
+    for i in range(0, WIDTH, Largeur):
+        for j in range(0, HEIGHT, Hauteur):
+            if i< event.x <i+Largeur and j< event.y <j+Hauteur:
+                if Terrain[k][2] == Vert or Terrain[k][2] == Jaune :
+                    Terrain[k][2] = Rouge
+                    canvas.create_rectangle((i, j),
+                        (i+Largeur, j+Hauteur), fill=Terrain[k][2])
+            k += 1
+
+            
+
 
 
 
@@ -114,7 +161,7 @@ Save = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Save", f
     # un bouton pour sauvegarder l’état du terrain dans un fichier;
 Load = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Load", font = ("helvetica", "30"), command = load) 
     # un bouton pour charger un terrain depuis un fichier;
-EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="step", font = ("helvetica", "30"), command = lambda: suivant("Enter")) 
+EtapeSuivante = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="step", font = ("helvetica", "30"), command = suivant()) 
     # un bouton permet d’effectuer une étape de simulation;
 Start = tk.Button(racine, width= 10, highlightbackground="#393B3B",text="Start", font = ("helvetica", "30"), command = start) 
     # un bouton qui permet de démarrer une simulation;
